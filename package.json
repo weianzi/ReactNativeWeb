@@ -1,0 +1,14 @@
+{
+  "name": "ReactNativeWeb",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "react-native": "^0.19.0",
+    "react-web": "^0.2.3"
+  }
+}

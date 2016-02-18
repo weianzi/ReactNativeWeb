@@ -1,6 +1,9 @@
 # ReactNativeWeb
 
-借用react-web实现三端（IOS/Android/Web）共用一套代码，生成原生的IOS/Android应用，及web手机应用（html/js）。
+借用react-web实现三端（IOS/Android/Web）共用一套逻辑代码（因组件各异，结构要分离），生成原生的IOS/Android应用，及Web手机应用（html）。
+
+Web/IOS 入口文件是：index.ios.js
+Android 入口文件是：index.android.js
 
 MAC10.10.5系统上测试通过。
 
@@ -11,6 +14,7 @@ npm 3+以上
 "react-dom": "^0.14.7"
 "react-native": "^0.17.0"
 "react-web": "^0.1.3"
+
 
 
 安装依赖命令

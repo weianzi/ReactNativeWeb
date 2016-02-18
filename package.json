@@ -3,11 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    //NODE_ENV=production 生产环境时打包发布
-    //-p 压缩混淆脚本
-    //-d 提供sorcemap
-    //--config使用另一份配置文件（如webpack.config.js）来打包
-    //--colors带色彩命令行 
     "web-bundle": "NODE_ENV=production webpack -p --config web/webpack.config.js --colors",  
     "web-dev": "node web/start-dev-server",
     "start": "node node_modules/react-native/local-cli/cli.js start"

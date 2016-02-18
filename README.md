@@ -1,16 +1,16 @@
 
 # React Native Web
 
-> 借用react-web实现三端（IOS/Android/Web）共用一套逻辑代码（因组件各异，结构要分离），生成原生的IOS/Android应用和Web应用。
+> 借用react-web实现三端（IOS/Android/Web）共用一套逻辑代码（因组件各异，部分代码要分开写），生成原生的IOS/Android应用和Web应用。
 
-## 入口说明
+## 入口
 
-* Web/IOS 入口：index.ios.js
-* Android 入口：index.android.js
+* Web/IOS ：index.ios.js
+* Android ：index.android.js
 
 ## 开发系统
 
-* >= MAC10.10.5， >= Xcode7，>= android 6
+* >= MAC10.10.5， >= Xcode7，Android 6.0 (API 23)
 
 ## 版本要求
 

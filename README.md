@@ -3,9 +3,24 @@
 
 > 借用react-web实现三端（IOS/Android/Web）共用一套逻辑代码（因组件各异，部分代码要分开写），生成原生的IOS/Android应用和Web应用。
 
+## 效果
+
+
+## Web效果地址
+
+因跨域，MAC系统终端输入以下代码，启动Chrome
+```
+open -a "Google Chrome" --args --disable-web-security
+```
+然后输入
+```
+http://weianzi.github.io/ReactNativeWeb/web/output/index.html
+```
+
 ## 入口
 
-* Web/IOS ：index.ios.js
+* Web ：index.web.js
+* IOS ：index.ios.js
 * Android ：index.android.js
 
 ## 开发系统
@@ -21,7 +36,6 @@
 * "react-dom": "^0.14.7"
 * "react-native": "^0.17.0"
 * "react-web": "^0.1.3"
-
 
 ## 安装
 

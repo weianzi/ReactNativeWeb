@@ -4,7 +4,7 @@
 > 借用react-web实现三端（IOS/Android/Web）共用一套逻辑代码（因组件各异，部分代码要分开写），生成原生的IOS/Android应用和Web应用。
 
 ## 效果
-
+![效果](https://raw.githubusercontent.com/weianzi/ReactNativeWeb/master/pic.jpg)
 
 ## Web效果地址
 

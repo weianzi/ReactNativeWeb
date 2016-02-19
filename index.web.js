@@ -1,5 +1,5 @@
 /**
- * IOS 入口文件
+ * web 入口文件
  */
 'use strict';
 
@@ -14,3 +14,8 @@ var ReactNativeWeb = React.createClass({
 });
 
 AppRegistry.registerComponent('ReactNativeWeb', () => ReactNativeWeb);
+
+//web
+var app = document.createElement('div');
+document.body.appendChild(app);
+AppRegistry.runApplication('ReactNativeWeb', {rootTag: app});

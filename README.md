@@ -17,6 +17,11 @@ open -a "Google Chrome" --args --disable-web-security
 http://weianzi.github.io/ReactNativeWeb/web/output/index.html
 ```
 
+windows下, Chrome浏览器如何设置可以解决Ajax跨域?
+```
+http://jingyan.baidu.com/article/7c6fb4281d685780642c900a.html
+```
+
 ## 入口
 
 * Web ：index.web.js

@@ -3,7 +3,7 @@
 * [高级版本入口>>](https://github.com/weianzi/ReactNativeRedux) 在这版本基础上加入了 Redux，改用ES6语法。
 
 ## 效果
-![效果](https://raw.githubusercontent.com/weianzi/ReactNativeWeb/master/pic.jpg)
+![效果](https://github.com/weianzi/ReactNativeWeb/blob/gh-pages/pic.jpg?raw=true)
 
 ## Web效果地址
 

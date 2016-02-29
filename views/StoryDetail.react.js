@@ -16,7 +16,7 @@ module.exports = React.createClass({
   },
   componentDidMount: function(){
     var This = this;
-    this._getDetailData(470, function(data){
+    this._getDetailData(this.props.detailId, function(data){
         This.setState({ data: data });
     });
   },
@@ -41,11 +41,10 @@ module.exports = React.createClass({
       return(
         <View style={styles.container}>
             <Text style={styles.title}>{data.Story.Title}</Text>
-            {data.Story.Content}
+            <View>{data.Story.Content}</View>
         </View>
       );
     }
-
     var HTML = '<!DOCTYPE html><html>'
         + '<head><style>img{width:100%}</style></head>'
         + '<body>'
@@ -63,6 +62,7 @@ module.exports = React.createClass({
         </View>
       );
   },
+
 });
 
 var styles = StyleSheet.create({

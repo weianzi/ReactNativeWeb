@@ -35,7 +35,7 @@ module.exports = React.createClass({
             pageSize: data.PageSize,
             loaded: true,
             isloadingNextPage: false
-        });          
+        });   
     });
   },
   _getStoryList: function(page, callback) {
@@ -63,7 +63,10 @@ module.exports = React.createClass({
   },
   _renderRow: function(rowData) {
       return (
-          <TouchableHighlight style={styles.touchBtn} underlayColor="#fff">
+          <TouchableHighlight 
+            style={styles.touchBtn} 
+            underlayColor="#fff" 
+            onPress={this._toDetail.bind(this, rowData.StoryId)}>
               <View style={styles.itemView}>
                   <Image source={{uri:rowData.CoverUrl}} style={styles.coverImg}/>
                   <View style={styles.textView}>
@@ -84,6 +87,14 @@ module.exports = React.createClass({
           </TouchableHighlight>
       );
   },
+
+  _toDetail: function (id) {
+    this.props.navigator.push({
+        name: 'storyDetail',
+        detailId: id,
+    });
+  },
+  
 });
 
 var styles = StyleSheet.create({

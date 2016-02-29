@@ -15,7 +15,7 @@ module.exports = React.createClass({
   getInitialState: function() {
       return { data: {} };
   },
-  componentDidMount: function(){
+  componentWillMount: function(){
     var This = this;
     this._getDetailData(this.props.detailId, function(data){
         This.setState({ data: data });

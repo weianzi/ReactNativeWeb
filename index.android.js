@@ -35,10 +35,9 @@ var RouteMapper = function(route, navigationOperations, onComponentRef) {
                   onIconClicked={navigationOperations.pop}
                   style={styles.toolbar}
                   titleColor="#fff"
-                  title={route.detailTitle} />
+                  title={route.title} />
                 <StoryDetail 
                   navigator={navigationOperations} 
-                  //detailTitle={route.detailTitle}
                   detailId={route.detailId} />
               </View>
             );

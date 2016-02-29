@@ -88,11 +88,11 @@ module.exports = React.createClass({
       );
   },
 
-  _toDetail: function (detailId, detailTitle) {
+  _toDetail: function (detailId, title) {
     this.props.navigator.push({
         name: 'storyDetail',
         detailId,
-        detailTitle,
+        title,
     });
   },
   

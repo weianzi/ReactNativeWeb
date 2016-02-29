@@ -4,12 +4,13 @@
 'use strict';
 
 var React = require('react-native');
-var WebList = require('./views/WebList.react');
+var StoryList = require('./views/StoryList.react');
+var StoryDetail = require('./views/StoryDetail.react');
 var { AppRegistry } = React;
 
 var ReactNativeWeb = React.createClass({
     render: function(){
-        return <WebList />;
+        return <StoryDetail />;
     }
 });
 

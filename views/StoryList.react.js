@@ -28,16 +28,14 @@ module.exports = React.createClass({
   componentDidMount: function(){
     var This = this;
     this._getStoryList(1, function(data){
-        setTimeout(function(){       
-          This.setState({
-              dataSource: This.state.dataSource.cloneWithRows(data.Data),
-              currentPage: data.PageIndex,
-              totalCount: data.TotalCount,
-              pageSize: data.PageSize,
-              loaded: true,
-              isloadingNextPage: false
-          });          
-        }, 600);
+        This.setState({
+            dataSource: This.state.dataSource.cloneWithRows(data.Data),
+            currentPage: data.PageIndex,
+            totalCount: data.TotalCount,
+            pageSize: data.PageSize,
+            loaded: true,
+            isloadingNextPage: false
+        });          
     });
   },
   _getStoryList: function(page, callback) {

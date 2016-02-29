@@ -4,6 +4,7 @@ var React = require('react-native');
 var {
   StyleSheet,
   Text,
+  ScrollView,
   View,
   Image,
   Platform,
@@ -38,11 +39,12 @@ module.exports = React.createClass({
       return <Text>Loading...</Text>;
     }
     if(Platform.OS == 'web'){
+      var HTML = '<style>img{width:100%}</style>' + data.Story.Content;
       return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.title}>{data.Story.Title}</Text>
-            <View>{data.Story.Content}</View>
-        </View>
+            <View style={styles.htmlView} dangerouslySetInnerHTML={{__html: HTML}} />
+        </ScrollView>
       );
     }
     var HTML = '<!DOCTYPE html><html>'
@@ -70,7 +72,13 @@ var styles = StyleSheet.create({
       flex: 1,
   },
   title:{
-      height:50,
+      height:40,
+      marginTop:10,
+      fontSize:20,
+      textAlign:'center'
+  },
+  htmlView:{
+    padding:10,
   },
   webView:{
       flex:1,

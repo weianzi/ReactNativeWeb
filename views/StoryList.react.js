@@ -66,7 +66,7 @@ module.exports = React.createClass({
           <TouchableHighlight 
             style={styles.touchBtn} 
             underlayColor="#fff" 
-            onPress={this._toDetail.bind(this, rowData.StoryId)}>
+            onPress={this._toDetail.bind(this, rowData.StoryId, rowData.Title)}>
               <View style={styles.itemView}>
                   <Image source={{uri:rowData.CoverUrl}} style={styles.coverImg}/>
                   <View style={styles.textView}>
@@ -88,10 +88,11 @@ module.exports = React.createClass({
       );
   },
 
-  _toDetail: function (id) {
+  _toDetail: function (detailId, detailTitle) {
     this.props.navigator.push({
         name: 'storyDetail',
-        detailId: id,
+        detailId,
+        detailTitle,
     });
   },
   

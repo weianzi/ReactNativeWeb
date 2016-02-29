@@ -53,15 +53,12 @@ module.exports = React.createClass({
         + data.Story.Content
         + '</body></html>';
       return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{data.Story.Title}</Text>
             <WebView
                 style={styles.webView}
                 source={{html: HTML}}
-                automaticallyAdjustContentInsets={false}
+                automaticallyAdjustContentInsets={true}
                 scalesPageToFit={true}
             />
-        </View>
       );
   },
 

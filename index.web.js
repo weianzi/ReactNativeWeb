@@ -2,8 +2,8 @@
  * web 入口文件
  */
 'use strict';
-
 var React = require('react-native');
+var MainTabBar = require('./MainTabBar.react');
 var StoryList = require('./views/StoryList.react');
 var StoryDetail = require('./views/StoryDetail.react');
 var {
@@ -24,8 +24,7 @@ var NavigationBarRouteMapper = {
       <TouchableOpacity
         onPress={() => navigator.pop()}
         style={styles.navBarLeftButton}>
-        <Text style={[styles.navBarText, styles.navBarButtonText]}>
-          back
+        <Text style={[styles.navBarText, styles.navBarButtonText]}>返回
         </Text>
       </TouchableOpacity>
     );
@@ -36,6 +35,13 @@ var NavigationBarRouteMapper = {
     );
   },
   Title: function(route, navigator, index, navState) {
+    if(!route.title){
+      return (
+        <Text style={[styles.navBarText, styles.navBarTitleText]}>
+          我的WebApp
+        </Text>
+      )
+    }
     return (
       <Text style={[styles.navBarText, styles.navBarTitleText]}>
         {route.title}
@@ -43,22 +49,28 @@ var NavigationBarRouteMapper = {
     );
   },
 };
-var RouteMapper = function(route, navigationOperations, onComponentRef) {
+var RouteMapper = function(route, navigator) {
     switch(route.name){
-        case 'storyList':
-            return (
-              <StoryList navigator={navigationOperations} />
-            );
-        case 'storyDetail':
-            return (
-                <StoryDetail navigator={navigationOperations} detailId={route.detailId} />
-            );
+      case 'storyList':
+          return (
+            <StoryList navigator={navigator} />
+          );
+      case 'storyDetail':
+          return (
+              <StoryDetail 
+                navigator={navigator} 
+                detailId={route.detailId} />
+          );
+        default:
+          return (
+              <MainTabBar navigator={navigator} />
+          );
     }
 };
 
 var ReactNativeWeb = React.createClass({
     render: function(){
-        var initialRoute = {name: 'storyList'};
+        var initialRoute = {name: 'MainTabBar'};
         return (
           <Navigator
               style={styles.container}
@@ -77,25 +89,24 @@ var ReactNativeWeb = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    //paddingTop: 20,
     flex: 1,
   },
   navBar: {
-    backgroundColor: '#efeff4',
-    height: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
+    backgroundColor: '#333',
+    height: 54,
+    top:-10,
   },
   navBarText: {
     fontSize: 16
   },
   navBarTitleText: {
-    color: '#000',
-    fontWeight: 700
+    //marginTop:-10,
+    color: '#fff',
   },
   navBarLeftButton: {
-    color: '#007aff',
+    color: '#fff',
     paddingLeft: 10,
+    //marginTop:-10,
   },
 });
 

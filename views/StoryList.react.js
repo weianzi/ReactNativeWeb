@@ -8,6 +8,7 @@ var {
   Image,
   ListView,
   Platform,
+  RefreshControl,
   ActivityIndicatorIOS,
   TouchableHighlight,
 } = React;
@@ -24,6 +25,7 @@ module.exports = React.createClass({
           currentPage: 0,
           totalCount: 0,//总数量
           pageSize: 10,
+          isRefreshing: false,
       };
   },
   componentDidMount: function(){
@@ -41,7 +43,8 @@ module.exports = React.createClass({
         totalCount: data.TotalCount,
         pageSize: data.PageSize,
         loaded: true,
-        isloadingNextPage: false
+        isloadingNextPage: false,
+        isRefreshing: false,
     }); 
   },
   _getStoryList: function(page, callback) {
@@ -60,6 +63,19 @@ module.exports = React.createClass({
     if(!this.state.loaded){
         return this._renderLoadingView();
     }
+    if(Platform.OS == 'web'){
+        return (
+          <ListView
+              dataSource={this.state.dataSource}
+              renderRow={this._renderRow}
+              onEndReachedThreshold={66}
+              automaticallyAdjustContentInsets={false}
+              showsVerticalScrollIndicator={false}
+              renderFooter={this._renderFooter}
+              onEndReached={this._loadMore}
+              style={styles.listView} />
+        );
+    }
     return (
       <ListView
           dataSource={this.state.dataSource}
@@ -69,11 +85,27 @@ module.exports = React.createClass({
           showsVerticalScrollIndicator={false}
           renderFooter={this._renderFooter}
           onEndReached={this._loadMore}
-          onRefreshStart={(endRefreshing) => {
-              setTimeout(()=>{console.log(endRefreshing)}, 1000);
-          }}
-          style={styles.listView} />
+          style={styles.listView}
+          refreshControl={
+              <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={this._onRefresh}
+                  tintColor='#ccc'
+                  title='正在刷新'
+                  colors={['#bbb','#ccc','#333']}
+                  progressBackgroundColor='#f9f9f9' />
+          }
+      />
     );
+  },
+  _onRefresh: function(){
+      var This = this;
+      this.setState({isRefreshing: true});
+      setTimeout(function(){
+        This._getStoryList(1, function(data){
+            This._setNewData(data);
+        });
+      }, 1000);
   },
   _renderRow: function(rowData) {
       return (

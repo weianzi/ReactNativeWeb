@@ -1,5 +1,4 @@
 'use strict';
-
 var React = require('react-native');
 var {
   AppRegistry,
@@ -9,6 +8,7 @@ var {
   Image,
   ListView,
   Platform,
+  ActivityIndicatorIOS,
   TouchableHighlight,
 } = React;
 
@@ -17,6 +17,7 @@ var {
 module.exports = React.createClass({
   getInitialState: function() {
       return {
+          data:[],
           dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
           loaded: false,
           isloadingNextPage: false, //是否正在加载下一页
@@ -28,14 +29,16 @@ module.exports = React.createClass({
   componentDidMount: function(){
     var This = this;
     this._getStoryList(1, function(data){
+        let newData = This.state.data.concat(data.Data);
         This.setState({
-            dataSource: This.state.dataSource.cloneWithRows(data.Data),
+            data: newData,
+            dataSource: This.state.dataSource.cloneWithRows(newData),
             currentPage: data.PageIndex,
             totalCount: data.TotalCount,
             pageSize: data.PageSize,
             loaded: true,
             isloadingNextPage: false
-        });   
+        }); 
     });
   },
   _getStoryList: function(page, callback) {
@@ -51,13 +54,18 @@ module.exports = React.createClass({
           });
   },
   render: function() {
+    if(!this.state.loaded){
+        return this._renderLoadingView();
+    }
     return (
       <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
-          onEndReachedThreshold={10}
+          onEndReachedThreshold={66}
           automaticallyAdjustContentInsets={false}
           showsVerticalScrollIndicator={false}
+          renderFooter={this._renderFooter}
+          onEndReached={this._loadMore}
           style={styles.listView} />
     );
   },
@@ -87,7 +95,46 @@ module.exports = React.createClass({
           </TouchableHighlight>
       );
   },
-
+  _renderLoadingView: function(isFooter){
+      return (
+          <View style={[styles.loading, isFooter ? styles.footerLoading : null]}>
+              <ActivityIndicatorIOS
+                  animating={true}
+                  color={'#808080'}
+                  size={'small'} />
+          </View>
+      );
+  },
+  _renderFooter: function(){
+      if(this.state.isloadingNextPage){
+          return this._renderLoadingView(true);
+      }
+  },
+  _loadMore: function(){
+      if (this.state.isloadingNextPage) {
+          return;
+      }
+      if(this.state.currentPage * this.state.pageSize >= this.state.totalCount){
+          return;
+      }
+      this.setState({isloadingNextPage: true});
+      let currentPage = this.state.currentPage;
+      let This = this;
+      setTimeout(function(){
+          This._getStoryList(currentPage + 1, function(data){
+              let newData = This.state.data.concat(data.Data);
+              This.setState({
+                  data: newData,
+                  dataSource: This.state.dataSource.cloneWithRows(newData),
+                  currentPage: data.PageIndex,
+                  totalCount: data.TotalCount,
+                  pageSize: data.PageSize,
+                  loaded: true,
+                  isloadingNextPage: false
+              }); 
+          });
+      }, 300);
+  },
   _toDetail: function (detailId, title) {
     this.props.navigator.push({
         name: 'storyDetail',
@@ -115,6 +162,16 @@ var styles = StyleSheet.create({
       paddingBottom:13,
       borderBottomWidth:1,
       borderColor:'#ebebeb',
+  },
+  loading:{
+      marginTop:150,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  footerLoading:{
+      height:30,
+      marginTop:10,
+      marginBottom:10,
   },
   coverImg:{
       width:85,

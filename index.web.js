@@ -12,6 +12,7 @@ var {
   StyleSheet,
   Text, 
   View,
+  Image,
   TouchableOpacity,
 } = React;
 
@@ -24,8 +25,9 @@ var NavigationBarRouteMapper = {
       <TouchableOpacity
         onPress={() => navigator.pop()}
         style={styles.navBarLeftButton}>
-        <Text style={[styles.navBarText, styles.navBarButtonText]}>返回
-        </Text>
+        <Image 
+           source={{uri:'./images/icon-back.imageset/icon-back@3x.png'}}
+           style={styles.navBarLeftIcon} />
       </TouchableOpacity>
     );
   },
@@ -44,7 +46,7 @@ var NavigationBarRouteMapper = {
     }
     return (
       <Text style={[styles.navBarText, styles.navBarTitleText]}>
-        {route.title}
+        {route.title.length>16 ? route.title.substring(0, 16) + '...' : route.title}
       </Text>
     );
   },
@@ -100,13 +102,15 @@ var styles = StyleSheet.create({
     fontSize: 16
   },
   navBarTitleText: {
-    //marginTop:-10,
     color: '#fff',
   },
   navBarLeftButton: {
     color: '#fff',
     paddingLeft: 10,
-    //marginTop:-10,
+  },
+  navBarLeftIcon:{
+   height:32,
+   width:22,
   },
 });
 

@@ -177,8 +177,8 @@ module.exports = React.createClass({
 var styles = StyleSheet.create({
   listView:{
       flex: 1,
-      marginTop:44,
-      marginBottom:44,
+      marginTop: Platform.OS =='web' ? 44 : 24,
+      marginBottom: 44,
       backgroundColor:'#f8f8f8',
   },
   itemView:{

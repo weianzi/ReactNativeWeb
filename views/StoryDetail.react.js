@@ -79,6 +79,7 @@ var styles = StyleSheet.create({
   },
   webView:{
       flex:1,
+      marginTop:Platform.OS =='web' ? 44 : 24,
   },
 });
 

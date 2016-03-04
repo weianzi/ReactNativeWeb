@@ -26,8 +26,8 @@ module.exports = React.createClass({
 
 var styles = StyleSheet.create({
 	container: {
-	  flex: 1,
-	  marginTop:44,
+    flex: 1,
+    marginTop: Platform.OS =='web' ? 44 : 24,
 	  marginBottom:44,
 	  backgroundColor:'#f8f8f8',
 	  justifyContent:'center',

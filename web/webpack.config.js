@@ -40,7 +40,8 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'output'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    //hash: true
   },
   plugins: [
     new HasteResolverPlugin({
@@ -56,7 +57,9 @@ module.exports = {
       React: "react"
     }): new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new HtmlPlugin(),
+    new HtmlPlugin({
+      title:'我的webApp'
+    }),
   ],
   module: {
     loaders: [{

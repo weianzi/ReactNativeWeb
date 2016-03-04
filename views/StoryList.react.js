@@ -69,6 +69,9 @@ module.exports = React.createClass({
           showsVerticalScrollIndicator={false}
           renderFooter={this._renderFooter}
           onEndReached={this._loadMore}
+          onRefreshStart={(endRefreshing) => {
+              setTimeout(()=>{console.log(endRefreshing)}, 1000);
+          }}
           style={styles.listView} />
     );
   },

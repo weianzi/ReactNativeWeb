@@ -29,17 +29,20 @@ module.exports = React.createClass({
   componentDidMount: function(){
     var This = this;
     this._getStoryList(1, function(data){
-        let newData = This.state.data.concat(data.Data);
-        This.setState({
-            data: newData,
-            dataSource: This.state.dataSource.cloneWithRows(newData),
-            currentPage: data.PageIndex,
-            totalCount: data.TotalCount,
-            pageSize: data.PageSize,
-            loaded: true,
-            isloadingNextPage: false
-        }); 
+        This._setNewData(data);
     });
+  },
+  _setNewData: function(data) {
+    let newData = this.state.data.concat(data.Data);
+    this.setState({
+        data: newData,
+        dataSource: this.state.dataSource.cloneWithRows(newData),
+        currentPage: data.PageIndex,
+        totalCount: data.TotalCount,
+        pageSize: data.PageSize,
+        loaded: true,
+        isloadingNextPage: false
+    }); 
   },
   _getStoryList: function(page, callback) {
       var domain = 'http://weixin.chatu.com';
@@ -122,16 +125,7 @@ module.exports = React.createClass({
       let This = this;
       setTimeout(function(){
           This._getStoryList(currentPage + 1, function(data){
-              let newData = This.state.data.concat(data.Data);
-              This.setState({
-                  data: newData,
-                  dataSource: This.state.dataSource.cloneWithRows(newData),
-                  currentPage: data.PageIndex,
-                  totalCount: data.TotalCount,
-                  pageSize: data.PageSize,
-                  loaded: true,
-                  isloadingNextPage: false
-              }); 
+              This._setNewData(data);
           });
       }, 300);
   },

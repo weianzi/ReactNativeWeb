@@ -11,6 +11,7 @@
     "babel-register": "^6.5.2",
     "react-dom": "^0.14.7",
     "react-native": "^0.20.0",
+    "react-native-storage": "0.0.16",
     "react-web": "^0.2.3"
   },
   "devDependencies": {

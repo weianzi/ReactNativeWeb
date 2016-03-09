@@ -110,7 +110,8 @@
      paddingLeft: 10,
    },
    navBarLeftIcon:{
-    height:22,
+    height:32,
+    width:22,
    },
    rightBtnView:{
    },

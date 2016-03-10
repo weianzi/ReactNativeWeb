@@ -13,7 +13,51 @@ var {
   TouchableHighlight,
 } = React;
 
-//var fetch = Platform.OS === 'web' ? require('ReactJsonp') : require('ReactFetch');
+import Storage from 'react-native-storage';
+
+//本地存储
+var storage = new Storage({
+    //最大容量，默认值1000条数据循环存储
+    size: 1000,    
+    //数据过期时间，默认一整天（1000 * 3600 * 24秒）
+    defaultExpires: 1000 * 3600 * 24,
+    //读写时在内存中缓存数据。默认启用。
+    enableCache: true,
+    //如果storage中没有相应数据，或数据已过期，
+    //则会调用相应的sync同步方法，无缝返回最新数据。
+    sync: {
+      //同步方法
+      storyList(params) {
+          let { id, resolve, reject } = params;
+          let domain = 'http://weixin.chatu.com';
+          let url = domain +'/api/article/GetList?pageindex=' + id + '&pagesize=10';
+          console.log('同步方法');
+          fetch(url)
+              .then(response => response.json())
+              .then(json => {
+                  if(json && json.Data){
+                      storage.save({
+                          key: 'storyList',
+                          rawData: json.Data
+                      });
+                      //成功则调用resolve
+                      resolve && resolve(json.Data);
+                  } else {
+                      // 失败则调用reject
+                      reject && reject('data parse error');
+                  }
+              })
+              .catch((error) => {
+                  console.warn(error);
+                  reject && reject(err);
+              }
+          );
+      }
+    }
+});
+//全局
+global.storage = storage;
+var first = true;
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -25,17 +69,61 @@ module.exports = React.createClass({
           currentPage: 0,
           totalCount: 0,//总数量
           pageSize: 10,
-          isRefreshing: false,
+          isRefreshing: false,          
       };
   },
+  //componentWillMount:function(){},
   componentDidMount: function(){
-    var This = this;
-    this._getStoryList(1, function(data){
-        This._setNewData(data);
-    });
+    // 读取
+    if(first){
+        storage.load({
+            key: 'storyList',
+            id: '1',
+            //autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的同步方法
+            autoSync: true,
+            //syncInBackground(默认为true)意味着如果数据过期，
+            //在调用同步方法的同时先返回已经过期的数据。
+            //设置为false的话，则始终强制返回同步方法提供的最新数据(当然会需要更多等待时间)。
+            syncInBackground: true
+        }).then( ret => {
+            //如果找到数据，则在then方法中返回
+            console.log(ret.storyListData);
+            if(ret.storyListData && ret.currentPage){
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(ret.storyListData),
+                    currentPage: 0,
+                    totalCount: ret.TotalCount,
+                    pageSize: ret.PageSize,
+                    loaded: true,
+                    isloadingNextPage: false,
+                    isRefreshing: false,
+                }); 
+                first = false;
+            } else {
+                this._getStoryList(1, data => {
+                   this._setNewData(data)
+                })
+            }
+        }).catch( err => {
+            //如果没有找到数据且没有同步方法，
+            //或者有其他异常，则在catch中返回
+            console.warn(err);
+        })
+    }
   },
   _setNewData: function(data) {
     let newData = this.state.data.concat(data.Data);
+    storage.save({
+        key: 'storyList',
+        id: '1',
+        rawData: {
+            storyListData: newData,
+            currentPage: data.PageIndex,
+            totalCount: data.TotalCount,
+            pageSize: data.PageSize,
+        },
+        expires: 1000 * 3600
+    });
     this.setState({
         data: newData,
         dataSource: this.state.dataSource.cloneWithRows(newData),
@@ -48,8 +136,9 @@ module.exports = React.createClass({
     }); 
   },
   _getStoryList: function(page, callback) {
+      console.log('远程获取数据' + page);
       var domain = 'http://weixin.chatu.com';
-      var url = domain +'/api/article/GetList?pageindex=' + page + '&pagesize=10';
+      var url = domain +'/api/article/GetList?pageindex=' + page + '&pagesize=5';
       fetch(url)
           .then((response) => response.json())
           .then((responseText) => {
@@ -101,9 +190,10 @@ module.exports = React.createClass({
   _onRefresh: function(){
       var This = this;
       this.setState({isRefreshing: true});
-      setTimeout(function(){
-        This._getStoryList(1, function(data){
-            This._setNewData(data);
+      setTimeout(() => {
+        this._getStoryList(1, (data) => {
+            this._setNewData(data);
+            this.setState({ data: [] });
         });
       }, 1000);
   },
@@ -153,14 +243,18 @@ module.exports = React.createClass({
           return;
       }
       if(this.state.currentPage * this.state.pageSize >= this.state.totalCount){
+          console.log(0);
           return;
       }
       this.setState({isloadingNextPage: true});
+      storage.remove({
+          key: 'storyList',
+          id: '1'
+      });
       let currentPage = this.state.currentPage;
-      let This = this;
-      setTimeout(function(){
-          This._getStoryList(currentPage + 1, function(data){
-              This._setNewData(data);
+      setTimeout(() => {
+          this._getStoryList(currentPage + 1, (data) => {
+              this._setNewData(data);
           });
       }, 300);
   },

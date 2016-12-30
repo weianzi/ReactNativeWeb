@@ -22,7 +22,7 @@ module.exports = React.createClass({
     });
   },
   _getDetailData: function(detailId, callback) {
-      var domain = 'http://weixin.chatu.com';
+      var domain = 'http://app.chatu.com';
       var url = domain + '/api/article/get/' + detailId;
       fetch(url)
           .then((response) => response.json())

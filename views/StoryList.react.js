@@ -48,7 +48,7 @@ module.exports = React.createClass({
     }); 
   },
   _getStoryList: function(page, callback) {
-      var domain = 'http://weixin.chatu.com';
+      var domain = 'http://app.chatu.com';
       var url = domain +'/api/article/GetList?pageindex=' + page + '&pagesize=10';
       fetch(url)
           .then((response) => response.json())
